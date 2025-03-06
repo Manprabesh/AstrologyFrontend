@@ -82,7 +82,7 @@ function WriteBlog() {
 
   }
 
-  return (
+    return (
     <div class="h-screen bg-black text-white ">
 
       <input type="text" placeholder='Heading' class='h-20 w-full text-white text-6xl ml-40' ref={heading} />
@@ -101,6 +101,7 @@ function WriteBlog() {
 }
 
 export default WriteBlog;
+
 
 
 

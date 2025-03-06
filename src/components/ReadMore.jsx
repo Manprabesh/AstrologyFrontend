@@ -5,6 +5,7 @@ import Quill from "quill";
 import { createSignal, onMount } from "solid-js";
 const [getContent, setContent] = createSignal([])
 const [email, setEmail] = createSignal([])
+const [userId, setUserId]=createSignal()
 
 function Rmore() {
 
@@ -13,8 +14,6 @@ function Rmore() {
     const inx = searchParams.index
 
     console.log(inx, "________");
-
-
 
     onMount(() => {
 
@@ -25,14 +24,23 @@ function Rmore() {
         })
             .then((data) => {
 
+                let data2=data.data
+                let em=data.email
+                console.log(data2);
+
                 console.log(data, "datatata");
 
-                let arrOfEmail = data.map((arr) => arr.uploadedby)
+                let arrOfEmail = em.map((arr) => arr.email)
                 // console.log(arrOfEmail, 'email');
 
                 setEmail(arrOfEmail)
+                setUserId(arrOfEmail)
+                console.log("fet email",userId());
 
-                let arrOfObj = data.map((arr) => JSON.parse(arr.content)); // Convert all JSON strings to objects
+                console.log(arrOfEmail,"arr of email");
+
+
+                let arrOfObj = data2.map((arr) => JSON.parse(arr.content)); // Convert all JSON strings to objects
                 setContent(arrOfObj);
 
                 // console.log(arrOfObj, "array of object");
@@ -45,6 +53,8 @@ function Rmore() {
             }).catch(err => {
                 console.log(err);
             })
+
+
 
 
         const quill = new Quill(quillRef, {

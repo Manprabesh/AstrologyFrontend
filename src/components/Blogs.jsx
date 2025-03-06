@@ -23,7 +23,8 @@ function Blogs() {
         return res.json()
     })
         .then((data) => {
-            setBlog2(data)
+            const data2=data.data
+            setBlog2(data2)
             // console.log(getBlog2());
             read()
             // console.log(data);
