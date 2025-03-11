@@ -1,28 +1,41 @@
-
 import { render } from 'solid-js/web'
-import './index.css'
-import Blogs from './components/blogs.jsx'
-import WriteBlog from './components/WriteBlog.jsx'
+import { lazy } from 'solid-js'
 import { Router, Route } from "@solidjs/router";
-import Rmore from './components/ReadMore.jsx';
-import signup from './components/signup.jsx'
-import Login from './components/Login.jsx'
-
-
-import NotFound from './components/NotFound.jsx'
-
-
+import './index.css'
 
 const root = document.getElementById('root')
 
+const route = [
+  {
+    path: '/',
+    component: lazy(() => import('./components/blogs.jsx'))
+  },
+  {
+    path: '/Rmore',
+    component: lazy(() => import('./components/ReadMore.jsx'))
+  },
+  {
+    path: '/WriteBlog',
+    component: lazy(() => import('./components/WriteBlog.jsx'))
+  },
+  {
+    path: '/signup',
+    component: lazy(() => import('./components/signup.jsx'))
+  },
+  {
+    path: '/login',
+    component: lazy(() => import('./components/Login.jsx'))
+  },
+  {
+    path:'*paramName',
+    component:lazy(()=>import('./components/NotFound.jsx'))
+  }
 
-render(() =>   <Router>
-  <Route path="/" component={Blogs} />
-  <Route path="/Rmore" component={Rmore} />
-  <Route path="/WriteBlog" component={WriteBlog} />
-  <Route path="*paramName" component={NotFound} />
-  <Route path="/signup" component={signup}/>
-  <Route path="/login" component={Login}/>
+]
 
-{/* </Route> */}
+
+render(() => <Router>
+
+  {route}
+
 </Router>, root)

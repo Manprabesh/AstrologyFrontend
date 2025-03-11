@@ -9,7 +9,8 @@ function Blogs() {
     const [getBlog2, setBlog2] = createSignal([])
     const [getContent, SetContent] = createSignal([])
     const [getHeading, setHeading] = createSignal([])
-
+    let editorRef
+    let containerRef;
 
     const handleReadMore = (blog, index) => {
         console.log("--------------");
@@ -18,39 +19,43 @@ function Blogs() {
         navigate(`/Rmore?title=${encodeURIComponent(blog)}&index=${encodeURIComponent(index)}`);
     };
 
-
-    fetch('http://localhost:3000/getBlog').then((res) => {
-        return res.json()
-    })
-        .then((data) => {
-            const data2=data.data
-            setBlog2(data2)
-            // console.log(getBlog2());
-            read()
-            // console.log(data);
-
-        }).catch(err => {
-            console.log(err);
+    onMount(()=>{
+        fetch('http://localhost:3000/getBlog').then((res) => {
+            return res.json()
         })
-    let editorRef
-    let containerRef;
+            .then((data) => {
+                console.log("data");
+                console.log(data);
+                const data2 = data.data
+                console.log("data2");
+                console.log(data2);
+
+                setBlog2(data2)
+                read()
+
+            }).catch(err => {
+                console.log(err);
+            })
+
+    })
+
+
 
     function read() {
         let data = getBlog2();
-
+        // console.log(data,"getblog");
 
         let arrOfObj = getBlog2().map((arr) => JSON.parse(arr.content));
         SetContent(arrOfObj);
+        // SetContent(data.content)
+        // console.log(data);
+        // console.log(getContent());
 
-        // console.log("Parsed Content:", getContent());
+        // console.log(arrOfObj);
 
         for (let i = 0; i < getBlog2().length; i++) {
-
             setHeading(prevHeadings => [...prevHeadings, getBlog2()[i].heading]);
         }
-        // console.log(getHeading(), "______");
-
-        // console.log("arrOfObj", arrOfObj);
 
     }
 
@@ -75,7 +80,7 @@ function Blogs() {
 
                                     <h2 class='text-6xl'>{heading}</h2>
 
-                                    <div ref={quillRef} />
+                                    <div class='bg-orange-400' ref={quillRef} />
                                     <button class='bg-blue-500' onClick={() => handleReadMore(heading, [i()])}>Read more</button>
                                 </div>
 
@@ -88,12 +93,13 @@ function Blogs() {
                                         });
 
                                         const content = getContent()[i()].ops.slice(0, 2)
+                                        // const content = getContent()[i()]
 
                                         console.log("content", content);
-
                                         quill.updateContents(content);
-                                        console.log("_______Content");
-                                        console.log(getContent(), "_");
+                                        // console.log("_______Content");
+                                        // console.log(i());
+                                        // console.log(getContent(), "_");
 
                                     }}
                                 </Show>
